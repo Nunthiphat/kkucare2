@@ -5,19 +5,21 @@ export async function getReports(req, res) {
 
         const { department } = req.query;
 
-        // switch (department) {
-        //     case "ทั้งหมด":
-        //         const allReports = await Reports.find()
-        //         return res.status(200).json(allReports)
-        //         break;
-        //     case :
-        //         const { user_id } = req.query
-        //         const userReports = await Reports.find({ user_id: user_id });
-        //         return res.status(200).json(userReports)
-        //         break;
-        //     default:
-        //         const departmentReports = await Reports.find({ department: department })
-        //         return res.status(200).json(departmentReports)
+        // if (department) {
+        //     switch (department) {
+        //         case "ทั้งหมด":
+        //             const allReports = await Reports.find()
+        //             return res.status(200).json(allReports)
+        //             break;
+        //         case : 
+        //             const { user_id } = req.query
+        //             const userReports = await Reports.find({ user_id: user_id });
+        //             return res.status(200).json(userReports)
+        //             break;
+        //         default:
+        //             const departmentReports = await Reports.find({ department: department })
+        //             return res.status(200).json(departmentReports)
+        //     }
         // }
 
         if (department == "ทั้งหมด") {
@@ -84,7 +86,8 @@ export async function updateReport(req, res) {
         }
         res.status(404).json({ error: 'Report not selected' });
     }
-    catch (error) {
+    catch (error) { 
+        console.error(error);
         res.status(500).json({ error: 'Failed to update report' });
     }
 }

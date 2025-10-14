@@ -11,8 +11,8 @@ const reportSchema = new Schema({
     topic : {type: String},
     description : {type: String},
     image: {
-      name: { type: String, required: true },     // ชื่อรูปภาพ
-      data: { type: String, required: true }      // ข้อมูลรูปภาพ (Base64 / ตัวอักษร)
+      name: { type: String, required: false },     // ชื่อรูปภาพ
+      data: { type: String, required: false }      // ข้อมูลรูปภาพ (Base64 / ตัวอักษร)
     },
     status : {type: String, default: "ส่งแล้ว"},
     department : {type: String}

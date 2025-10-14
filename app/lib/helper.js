@@ -61,6 +61,11 @@ export async function createReport(formData) {
 
 //update a new report
 export async function updateReport(report_id, formData) {
+
+    console.log("this is helper : ", formData)
+    console.log("this is helper id : ", report_id)
+
+
     const Options = {
             method: "PUT",
             headers: {

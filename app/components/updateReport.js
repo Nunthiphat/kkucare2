@@ -10,6 +10,7 @@ const formReducer = (state, event) => ({
 
 export default function UpdateReportForm({ reportData, onSuccess }) {
   const initialForm = {
+    report_id: reportData?.report_id || "",
     topic: reportData?.topic || "",
     description: reportData?.description || "",
     image: reportData?.image || null,
@@ -17,16 +18,20 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
     status: reportData?.status || "",
   };
 
+  console.log("image in update form:", reportData?.image);
+
+  console.log("report data in update form:", initialForm.report_id);
+
   const [formData, setFormData] = useReducer(formReducer, initialForm);
   const [fileName, setFileName] = useState("📁 เพิ่มรูปภาพ");
   const [fileBase64, setFileBase64] = useState("");
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
-    mutationFn: updateReport,
+    mutationFn: ({ report_id, formData }) => updateReport(report_id, formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reports"] });
-      if (onSuccess) onSuccess();
+      if (onSuccess) {alert("Update Success!"); onSuccess()}
     },
   });
 
@@ -36,6 +41,16 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
       setFormData({ target: { name: "description", value: reportData.description || "" } });
       setFormData({ target: { name: "department", value: reportData.department || "" } });
       setFormData({ target: { name: "status", value: reportData.status || "" } });
+
+      // ถ้ามีรูปเก่า ให้ตั้งชื่อไว้เฉย ๆ ไม่ต้องแปลง base64 ใหม่
+      if (reportData.image && typeof reportData.image === "object" && reportData.image.name) {
+        setFileName(reportData.image.name);
+        setFileBase64(reportData.image.data || "");
+      } else if (typeof reportData.image === "string") {
+        // ถ้าเป็น string base64 หรือ URL
+        setFileName("📁 รูปเก่า");
+        setFileBase64(reportData.image);
+      }
     }
   }, [reportData]);
 
@@ -49,6 +64,9 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
+
+    console.log("file in handleFileChange:", e);
+
     if (file) {
       setFileName(file.name);
       const base64 = await toBase64(file);
@@ -69,7 +87,7 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
       },
     };
     console.log("📦 Data to send:", dataToSend);
-    mutation.mutate(dataToSend);
+    mutation.mutate({ report_id: reportData.report_id, formData: dataToSend });
   };
 
   return (
@@ -98,7 +116,7 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
             htmlFor="image"
             className="cursor-pointer border border-gray-500 bg-white rounded-md px-2 py-2"
           >
-            <span>{fileName}</span>
+            <span>{fileName},"รูปเก่า"</span>
           </label>
           <input
             onChange={handleFileChange}
@@ -125,14 +143,23 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
             <option value="สถานที่">สถานที่</option>
             <option value="อื่นๆ">อื่นๆ</option>
           </select>
-          <button
-            className="flex justify-center text-md w-2/6 bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600"
-            type="submit"
-          >
-            Update <HiPlusSm size={25} />
-          </button>
+          <div className="flex justify-start gap-4">
+            <button
+              className="flex justify-center text-md w-2/6 bg-green-500 text-white rounded-md px-4 py-2 hover:bg-green-600"
+              type="submit"
+            >
+              Update <HiPlusSm size={25} />
+            </button>
+            <button
+              className="flex justify-center text-md w-2/6 bg-red-500 text-white rounded-md px-4 py-2 hover:bg-red-600"
+              type="button"
+              onClick={onSuccess}
+            >
+              Cancel <HiPlusSm size={25} />
+            </button>
+          </div>
         </div>
       </form>
     </div>
-  );
+  )
 }

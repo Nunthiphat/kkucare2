@@ -68,7 +68,7 @@ export default function Home() {
     };
 
     // 🔙 เมื่ออัปเดตเสร็จหรือกดยกเลิก
-    const handleCancelUpdate = () => {
+    const onSuccess = () => {
         setSelectedReport(null);
         setIsUpdate(false);
         setVisible(false);
@@ -90,7 +90,7 @@ export default function Home() {
 
                     {/* ✅ ส่วนฟอร์ม */}
                     <div className="container mx-auto py-2">
-                        {visible && (<ReportForm isUpdate={isUpdate} selectedReport={selectedReport} onSuccess={handleCancelUpdate} />)}
+                        {visible && (<ReportForm isUpdate={isUpdate} selectedReport={selectedReport} onSuccess={onSuccess} />)}
                     </div>
 
                     {/* ✅ ตารางรายงาน (อยู่ตลอดเวลา) */}

@@ -6,9 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function UserTable({ userData, onEdit }) {
-    
-    // ✅ เรียก useState ก่อน return ใด ๆ เสมอ
-    const [flag, setFlag] = useState(true);
 
     // ✅ เรียก useQuery ต่อจากนั้น
     const { isLoading, isError, data, error } = useQuery({queryKey: ['reports', userData], queryFn:() => getReports(userData)})
