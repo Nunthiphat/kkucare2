@@ -12,6 +12,7 @@
     "bcryptjs": "^3.0.2",
     "cookie": "^1.0.2",
     "install": "^0.13.0",
+    "lucide-react": "^0.545.0",
     "mongoose": "^8.18.2",
     "next": "15.5.4",
     "npm": "^11.6.1",

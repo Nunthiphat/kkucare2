@@ -78,7 +78,7 @@ export default function AddReportForm(){
                     </label>
                     <input onChange={handleFileChange} id="image" name="image" type="file" className={`hidden`} />
                     <select onChange={setFormData} className="cursor-pointer border border-gray-500 bg-white rounded-md placeholder:gray-500 px-2 py-2 hover:border-gray-800" id="department" name="department" required>
-                        <option value="" disabled hidden>แผนก (แผนกที่รับผิดชอบ)</option>
+                        <option value="" disabled selected hidden>แผนก (แผนกที่รับผิดชอบ)</option>
                         <option value="โสต">โสต</option>
                         <option value="หอพัก">หอพัก</option>
                         <option value="บริหาร">บริหาร</option>

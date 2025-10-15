@@ -2,6 +2,7 @@ import { useState, useReducer, useEffect } from "react";
 import { HiPlusSm } from "react-icons/hi";
 import { updateReport } from "../lib/helper";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { Alert } from "./message";
 
 const formReducer = (state, event) => ({
   ...state,
@@ -25,15 +26,25 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
   const [formData, setFormData] = useReducer(formReducer, initialForm);
   const [fileName, setFileName] = useState("📁 เพิ่มรูปภาพ");
   const [fileBase64, setFileBase64] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: ({ report_id, formData }) => updateReport(report_id, formData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reports"] });
-      if (onSuccess) {alert("Update Success!"); onSuccess()}
+
+      // ✅ แสดง Alert ก่อน
+      setShowAlert(true);
+
+      // ✅ ปิดฟอร์มหลัง 2 วินาที
+      setTimeout(() => {
+        setShowAlert(false);
+        if (onSuccess) onSuccess();
+      }, 2000);
     },
   });
+
 
   useEffect(() => {
     if (reportData) {
@@ -92,6 +103,7 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
 
   return (
     <div>
+      {showAlert && <Alert message="อัปเดตเรียบร้อย" show onClose={() => setShowAlert(false)} />}
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <input
@@ -133,7 +145,7 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
             value={formData.department}
             required
           >
-            <option value="" disabled hidden>
+            <option value="" disabled selected hidden>
               แผนก (แผนกที่รับผิดชอบ)
             </option>
             <option value="โสต">โสต</option>
