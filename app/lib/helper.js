@@ -3,14 +3,20 @@ const BASE_URL = 'http://localhost:3000'
 
 //search reports
 export const getReports = async (userData) => {
-
     const { role } = userData;
 
-    if(role == 'เจ้าหน้าที่'){
+    if(role == 'ผู้ดูแลระบบ'){
         const department = userData?.department;
         const response = await fetch(`${BASE_URL}/api/report?department=${department}`)       
         const json = await response.json()
         return json
+
+    } else if (role == 'เจ้าหน้าที่') {
+        const department = userData?.department;
+        const response = await fetch(`${BASE_URL}/api/report?department=${department}`)       
+        const json = await response.json()
+        return json
+        
     } else {
         const user_id = userData?.user_id;
         const response = await fetch(`${BASE_URL}/api/report?user_id=${user_id}`)
@@ -19,14 +25,14 @@ export const getReports = async (userData) => {
     }
 }
 
-export const receiveReports = async () => {
+// export const receiveReports = async () => {
+//     const department_id = sessionStorage.getItem("role");
 
-    const department_id = sessionStorage.getItem("role");
-    const response = await fetch(`${BASE_URL}/api/report/receive?department_id=${department_id}`)
-    const json = await response.json()
+//     const response = await fetch(`${BASE_URL}/api/report/receive?department_id=${department_id}`)
+//     const json = await response.json()
 
-    return json
-}
+//     return json
+// }
 
 //single report
 export const getReport = async(report_id) => {
@@ -61,7 +67,6 @@ export async function createReport(formData) {
 
 //update a new report
 export async function updateReport(report_id, formData) {
-
     console.log("this is helper : ", formData)
     console.log("this is helper id : ", report_id)
 
@@ -92,22 +97,45 @@ export async function deleteReport(reportId) {
 }
 
 export async function handleLogin(email, password) {
+    const res = await fetch("../api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+    });
 
-  const res = await fetch("../api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    const data = await res.json();
 
-  });
+    if (res.ok) {
+        // เก็บข้อมูลผู้ใช้ลง sessionStorage
+        sessionStorage.setItem("user", JSON.stringify(data.user));
 
-  const data = await res.json();
+        // แจ้ง Header ให้รีโหลด user ใหม่
+        window.dispatchEvent(new Event("storage"));
 
-  if (res.ok) {
-    // เก็บ user_id ไว้ใน sessionStorage
-    sessionStorage.setItem("user", JSON.stringify(data.user));
+        return {
+        ok: true,
+        message: data.message, // ✅ ดึงจาก server โดยตรง
+        user: data.user,
+        };
+    } else {
+        return {
+        ok: false,
+        message: data.error || "ไม่สามารถเข้าสู่ระบบได้", // ✅ error จาก server
+        };
+    }
+}
 
-    return res;
-  } else {
-    alert(data.error);
-  }
+export async function searchFilter(searchfilter){
+    const filter = searchfilter.keysearch
+    const Options = {
+           method: "GET",
+           headers: {
+               "Content-Type": "application/json"
+           },
+           body: JSON.stringify(filter)
+    }
+    const response = await fetch(`${BASE_URL}/api/report${filter}`, Options)     
+    const json = await response.json()
+    return json
+        
 }

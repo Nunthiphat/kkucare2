@@ -2,7 +2,7 @@ import { useState } from "react";
 import AddReportForm from "./addReport";
 import UpdateReportForm from "./updateReport";
 
-export default function ReportForm({ isUpdate, selectedReport, onSuccess }) {
+export default function ReportForm({ isUpdate, selectedReport, onSuccess, onClose }) {
 
     return (
         <div className="container mx-auto py-2">
@@ -10,7 +10,7 @@ export default function ReportForm({ isUpdate, selectedReport, onSuccess }) {
         {isUpdate ? (
             <UpdateReportForm reportData={selectedReport} onSuccess={onSuccess} />
         ) : (
-            <AddReportForm />
+            <AddReportForm onSuccess={onSuccess} onClose={onClose}/>
         )}
         </div>
     );

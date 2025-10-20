@@ -2,28 +2,17 @@ import Reports from "../model/report";
 
 export async function getReports(req, res) {
     try {
+        const searchTerm = req.query.search || "";
+        if (searchTerm) {
+            const searchReports = await Reports.find({ topic: { $regex: searchTerm, $options: 'i' } }).sort({ start_date: -1 });
+            return res.status(200).json(searchReports);
+        }
 
         const { department } = req.query;
 
-        // if (department) {
-        //     switch (department) {
-        //         case "ทั้งหมด":
-        //             const allReports = await Reports.find()
-        //             return res.status(200).json(allReports)
-        //             break;
-        //         case : 
-        //             const { user_id } = req.query
-        //             const userReports = await Reports.find({ user_id: user_id });
-        //             return res.status(200).json(userReports)
-        //             break;
-        //         default:
-        //             const departmentReports = await Reports.find({ department: department })
-        //             return res.status(200).json(departmentReports)
-        //     }
-        // }
-
+        // ✅ แสดงทั้งหมด (เรียงใหม่ก่อน)
         if (department == "ทั้งหมด") {
-            const allReports = await Reports.find()
+            const allReports = await Reports.find().sort({ start_date: -1 });
 
             console.log("Query Parameters:", req.query); // ✅ ตรวจสอบค่า query parameters ที่ได้รับ
 
@@ -32,21 +21,23 @@ export async function getReports(req, res) {
 
             return res.status(200).json(allReports)
 
+        // ✅ แสดงตามแผนก (เรียงใหม่ก่อน)
         } else if (department) {
             const { department } = req.query
-            const departmentReports = await Reports.find({ department: department })
+            const departmentReports = await Reports.find({ department: department }).sort({ start_date: -1 });
 
             return res.status(200).json(departmentReports)
             
+        // ✅ แสดงของผู้ใช้แต่ละคน (เรียงใหม่ก่อน)
         } else {
             const { user_id } = req.query
-            const userReports = await Reports.find({ user_id: user_id });
+            const userReports = await Reports.find({ user_id: user_id }).sort({ start_date: -1 });
             return res.status(200).json(userReports)
         }
 
     }
     catch (error) {
-        res.status(500).json({ error: 'Failed to fetch report' });
+        res.status(500).json({ error: 'ไม่สามารถค้นหาข้อมูลได้' });
     }
 }
 

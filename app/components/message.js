@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { X } from "lucide-react"; // optional icon lib (install with npm i lucide-react)
 
 export function LoginSuccess() {
+  window.location.reload();
     return (
         <div className="success container mx-auto">
             <div className="flex justify-center mx-auto border border-yellow-400 bg-green-500 text-white text-md my-4 py-2 text-center rounded-md">
@@ -47,7 +48,7 @@ export function UpdateSuccess() {
 }
 
 export function Alert({ type = "info", message, show, onClose, duration = 3000 }) {
-  // auto close after duration
+  // ปิดอัตโนมัติหลังเวลาที่กำหนด
   useEffect(() => {
     if (!show) return;
     const timer = setTimeout(() => onClose?.(), duration);
@@ -65,23 +66,28 @@ export function Alert({ type = "info", message, show, onClose, duration = 3000 }
 
   return (
     <div
-      className={
-        `fixed top-6 right-6 z-50 flex items-center gap-3 
-        border-l-4 px-4 py-3 rounded-lg shadow-md 
+      className={`
+        fixed top-8 left-1/2 -translate-x-1/2 z-[9999]
         transition-all duration-300 ease-out
-        transform opacity-100 translate-y-0
         animate-in fade-in slide-in-from-top-5
-        ${typeClasses[type]}`
-      }
-      role="alert"
+      `}
     >
-      <div className="flex-1 text-sm">{message}</div>
-      <button
-        onClick={onClose}
-        className="p-1 text-slate-700 hover:text-slate-900 transition"
+      <div
+        className={`
+          flex items-center gap-3 border-l-4 px-6 py-4 rounded-2xl shadow-lg
+          text-lg font-medium max-w-lg w-full mx-auto
+          ${typeClasses[type]}
+        `}
+        role="alert"
       >
-        <X size={16} />
-      </button>
+        <div className="flex-1 text-center">{message}</div>
+        <button
+          onClick={onClose}
+          className="p-1 text-slate-700 hover:text-slate-900 transition"
+        >
+          <X size={20} />
+        </button>
+      </div>
     </div>
   );
 }

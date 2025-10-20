@@ -15,7 +15,9 @@ const reportSchema = new Schema({
       data: { type: String, required: false }      // ข้อมูลรูปภาพ (Base64 / ตัวอักษร)
     },
     status : {type: String, default: "ส่งแล้ว"},
-    department : {type: String}
+    department : {type: String},
+    start_date : {type: Date, default: Date.now},
+    end_date : {type: Date, default: null},
 });
 
 const Reports = models.report || model('report', reportSchema)

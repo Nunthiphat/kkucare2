@@ -1,9 +1,12 @@
 "use client"
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import UserManage from "../components/userManage"
 import { useState, useEffect } from "react";
-import Dashboard from "../components/dashboard";
 
-export default function Home() {
+const queryClient = new QueryClient()
+
+export default function UserManagement(){
+
     const [userData, setUserData] = useState({
         user_id: null,
         department: null,
@@ -55,6 +58,10 @@ export default function Home() {
     }
 
     return (
-        <Dashboard />
-    );
+        <QueryClientProvider client={queryClient}>
+            <>
+                <UserManage />
+            </>
+        </QueryClientProvider>
+    )
 }
