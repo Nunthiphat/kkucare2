@@ -128,33 +128,35 @@ export default function UserTable({ userData, onEdit }) {
             </div>
 
             {/* ✅ ตารางข้อมูล */}
-            <table className="min-w-full table-auto rounded-xl">
-                <thead>
-                <tr className="bg-gray-200 text-center">
-                    <th className="py-2 px-4 border-b border-t">หัวข้อ</th>
-                    <th className="py-2 px-4 border-b border-t">คำอธิบาย</th>
-                    <th className="py-2 px-4 border-b border-t">ภาพ</th>
-                    <th className="py-2 px-4 border-b border-t">สถานะ</th>
-                    <th className="py-2 px-4 border-b border-t">แผนก</th>
-                    <th className="py-2 px-4 border-b border-t">เวลาที่รายงาน</th>
-                    <th className="py-2 px-4 border-b border-t">การดำเนินการ</th>
-                </tr>
-                </thead>
+            <div className="overflow-hidden rounded-xl shadow-lg border">
+                <table className="min-w-full table-auto">
+                    <thead>
+                        <tr className="bg-gray-200 text-center">
+                            <th className="py-2 px-4 border-b ">หัวข้อ</th>
+                            <th className="py-2 px-4 border-b ">คำอธิบาย</th>
+                            <th className="py-2 px-4 border-b ">ภาพ</th>
+                            <th className="py-2 px-4 border-b ">สถานะ</th>
+                            <th className="py-2 px-4 border-b ">แผนก</th>
+                            <th className="py-2 px-4 border-b ">เวลาที่รายงาน</th>
+                            <th className="py-2 px-4 border-b ">การดำเนินการ</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                {Array.isArray(filteredData) && filteredData.length > 0 ? (
-                    filteredData.map((obj, i) => (
-                    <Tr key={i} {...obj} onView={() => openModal(obj)} onEdit={onEdit} onDelete={() => handleDelete(obj.report_id)}/>
-                    ))
-                ) : (
-                    <tr>
-                    <td colSpan={7} className="text-center p-4">
-                        ไม่มีรายงาน
-                    </td>
-                    </tr>
-                )}
-                </tbody>
-            </table>
+                    <tbody>
+                        {Array.isArray(filteredData) && filteredData.length > 0 ? (
+                            filteredData.map((obj, i) => (
+                            <Tr key={i} {...obj} onView={() => openModal(obj)} onEdit={onEdit} onDelete={() => handleDelete(obj.report_id)}/>
+                            ))
+                        ) : (
+                            <tr>
+                            <td colSpan={7} className="text-center p-4">
+                                ไม่มีรายงาน
+                            </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
 
             {/* ✅ Modal */}
             {isOpen && selectedReport && <DataModal report={selectedReport} onClose={closeModal} />}
@@ -189,7 +191,7 @@ export default function UserTable({ userData, onEdit }) {
 
         return (
         
-        <tr className="bg-gray-100 text-center hover:bg-gray-50">
+        <tr className="text-center hover:bg-gray-50 odd:bg-white even:bg-gray-100 last:[&>td]:border-b-0">
             <td className="px-4 py-2 border-b">
                 <button className="text-blue-600 hover:underline" onClick={onView}>
                 {topic || "ไม่มี"}

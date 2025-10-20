@@ -149,16 +149,16 @@ function Tr({
     const [showImage, setShowImage] = useState(false);
 
     return (
-      <tr className="bg-gray-100 text-center hover:bg-gray-50">
-        <td className="px-4 py-2 border-r border-b">
+      <tr className="text-center hover:bg-gray-50 odd:bg-white even:bg-gray-100 last:[&>td]:border-b-0">
+        <td className="px-4 py-2 border-b">
           <button className="text-blue-600 hover:underline" onClick={onView}>
             {topic || "ไม่มี"}
           </button>
         </td>
-        <td className="px-4 py-2 border-r border-b">
+        <td className="px-4 py-2 border-b">
           <span className="line-clamp-2">{description || "ไม่มี"}</span>
         </td>
-        <td className="px-4 py-2 border-r border-b">
+        <td className="px-4 py-2 border-b">
           <div className="flex justify-center items-center gap-2">
             {image && image.data ? (
               <>
@@ -210,7 +210,7 @@ function Tr({
               )}
           </div>
         </td>
-        <td className="px-4 py-2 border">
+        <td className="px-4 py-2 border-b">
           <span
             className={`${
               status == "ส่งแล้ว"
@@ -225,10 +225,10 @@ function Tr({
             {status || "ไม่มี"}
           </span>
         </td>
-        <td className="px-4 py-2 border">
+        <td className="px-4 py-2 border-b">
           <span>{department || "ไม่มี"}</span>
         </td>
-        <td className="px-4 py-2 border">
+        <td className="px-4 py-2 border-b">
           <div className="flex justify-center items-center">
             <button
               title="แก้ไข"
@@ -252,7 +252,7 @@ function Tr({
             >
               <BiSolidTrashAlt title="ลบ" onClick={() => deleteReport(report_id)} color="red" size={20}></BiSolidTrashAlt>
             </button>
-          </div> */}
+          </div> */}    
         </td>
       </tr>
     );
