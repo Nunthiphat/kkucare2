@@ -159,7 +159,7 @@ export default function Dashboard() {
       {/* 🔹 กราฟแนวโน้มรายงาน */}
       <div className="mt-10 bg-white shadow-lg rounded-2xl p-6">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-xl font-semibold text-gray-700">📅 แนวโน้มรายงาน</h2>
+          <h2 className="text-xl font-semibold text-gray-700">📅 สถิติรายงาน</h2>
           <select
             value={trendType}
             onChange={(e) => setTrendType(e.target.value)}
