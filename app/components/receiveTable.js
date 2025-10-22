@@ -115,7 +115,7 @@ export default function ReceiveTable({ userData, onEdit }) {
             <tbody className="bg-white">
               {filteredData.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="text-center p-4 border-b">
+                  <td colSpan={7} className="text-center p-4 border-b">
                     ไม่มีรายงาน
                   </td>
                 </tr>
