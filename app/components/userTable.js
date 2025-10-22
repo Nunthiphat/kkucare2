@@ -192,13 +192,13 @@ export default function UserTable({ userData, onEdit }) {
         return (
         
         <tr className="text-center hover:bg-gray-50 odd:bg-white even:bg-gray-100 last:[&>td]:border-b-0">
-            <td className="px-4 py-2 border-b">
-                <button className="text-blue-600 hover:underline" onClick={onView}>
+            <td className="px-4 py-2 border-b max-w-[150px] overflow-hidden whitespace-nowrap text-ellipsis">
+                <button className="inline-block text-blue-600 hover:underline truncate" onClick={onView}>
                 {topic || "ไม่มี"}
                 </button>
             </td>
-            <td className="px-4 py-2 border-b">
-                <span className="line-clamp-2">{description || "ไม่มี"}</span>
+            <td className="px-4 py-2 border-b max-w-[250px] overflow-hidden text-ellipsis whitespace-nowrap">
+                <span className="block truncate">{description || "ไม่มี"}</span>
             </td>
             <td className="px-4 py-2 border-b">
                 <div className="flex justify-center items-center gap-2">
@@ -267,7 +267,7 @@ export default function UserTable({ userData, onEdit }) {
             <td className="px-4 py-2 border-b">
                 <span>{department || "ไม่มี"}</span>
             </td>
-            <td className="px-4 py-2 border-b">{formattedDate}</td> {/* ✅ เวลาที่รายงาน */}
+            <td className="px-4 py-2 border-b max-w-[80px]">{formattedDate}</td> {/* ✅ เวลาที่รายงาน */}
             <td className="px-4 py-2 border-b">
                 <div className="flex justify-center items-center gap-10">
                 <button

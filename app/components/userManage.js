@@ -93,11 +93,11 @@ export default function UserManage() {
         <table className="min-w-full border rounded-lg shadow-lg overflow-hidden">
           <thead className="bg-gray-200">
             <tr className="text-center">
-              <th className="py-3.5 px-4 border">ชื่อผู้ใช้</th>
-              <th className="py-3.5 px-4 border">อีเมล</th>
-              <th className="py-3.5 px-4 border">บทบาท</th>
-              <th className="py-3.5 px-4 border">แผนก</th>
-              <th className="py-3.5 px-4 border">การจัดการ</th>
+              <th className="py-3.5 px-4">ชื่อผู้ใช้</th>
+              <th className="py-3.5 px-4">อีเมล</th>
+              <th className="py-3.5 px-4">บทบาท</th>
+              <th className="py-3.5 px-4">แผนก</th>
+              <th className="py-3.5 px-4 text-center">การจัดการ</th>
             </tr>
           </thead>
 
@@ -114,15 +114,24 @@ export default function UserManage() {
                   key={user._id}
                   className="text-center border-b hover:bg-gray-50 transition-colors"
                 >
-                  <td className="px-4 py-3">{user.name || "-"}</td>
-                  <td className="px-4 py-3 border-l border-r">{user.email}</td>
+                  <td className="px-4 py-3 max-w-[100px]">{user.name || "-"}</td>
+                  <td className="px-4 py-3">{user.email}</td>
 
-                  <td className="px-4 py-3 border-r decoration-gray-400">
+                  <td className="px-4 py-3 decoration-gray-400 w-[150px]">
                     {editUser?._id === user._id ? (
                       <select
                         value={editUser.role}
-                        onChange={(e) => handleRoleChange(user, e.target.value)}
-                        className="border rounded px-2 py-1"
+                        onChange={(e) => {
+                          const newRole = e.target.value;
+
+                          // ✅ ปรับ department อัตโนมัติตาม role ที่เลือก
+                          let autoDepartment = editUser.department;
+                          if (newRole === "ผู้ดูแลระบบ") autoDepartment = "ทั้งหมด";
+                          else if (newRole === "ผู้ใช้ทั่วไป") autoDepartment = "ไม่มี";
+
+                          setEditUser({ ...editUser, role: newRole, department: autoDepartment });
+                        }}
+                        className="border rounded px-2 py-1 w-full text-center"
                       >
                         <option value="ผู้ใช้ทั่วไป">ผู้ใช้ทั่วไป</option>
                         <option value="เจ้าหน้าที่">เจ้าหน้าที่</option>
@@ -133,28 +142,35 @@ export default function UserManage() {
                     )}
                   </td>
 
-                  <td className="px-4 py-3 border-r decoration-gray-400">
-                    {editUser?._id === user._id &&
-                    (editUser.role === "เจ้าหน้าที่" ||
-                      editUser.role === "ผู้ดูแลระบบ") ? (
-                      <select
-                        value={editUser.department || ""}
-                        onChange={(e) => handleDepartmentChange(e.target.value)}
-                        className="border rounded px-2 py-1"
-                      >
-                        <option value="">เลือกแผนก</option>
-                        {departments.map((dep) => (
-                          <option key={dep} value={dep}>
-                            {dep}
-                          </option>
-                        ))}
-                      </select>
+                  <td className="px-4 py-3 decoration-gray-400 w-[150px]">
+                    {editUser?._id === user._id ? (
+                      // ✅ ถ้าเป็นผู้ใช้ทั่วไปหรือผู้ดูแลระบบ ให้แสดงค่าแบบอ่านอย่างเดียว
+                      editUser.role === "ผู้ใช้ทั่วไป" ? (
+                        <span className="text-gray-500">ไม่มี</span>
+                      ) : editUser.role === "ผู้ดูแลระบบ" ? (
+                        <span className="text-gray-500">ทั้งหมด</span>
+                      ) : (
+                        // ✅ ถ้าเป็นเจ้าหน้าที่ถึงจะแสดง select ให้เลือกได้
+                        <select
+                          value={editUser.department || ""}
+                          onChange={(e) => handleDepartmentChange(e.target.value)}
+                          className="border rounded px-2 py-1 w-full text-center"
+                        >
+                          <option value="">เลือกแผนก</option>
+                          {departments.map((dep) => (
+                            <option key={dep} value={dep}>
+                              {dep}
+                            </option>
+                          ))}
+                        </select>
+                      )
                     ) : (
                       user.department || "-"
                     )}
                   </td>
 
-                  <td className="px-4 py-3 flex justify-center gap-3">
+
+                  <td className="px-4 py-3 flex justify-center items-center gap-3">
                     {editUser?._id === user._id ? (
                       <>
                         <button
