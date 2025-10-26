@@ -102,8 +102,11 @@ export default function UpdateReportForm({ reportData, onSuccess }) {
     };
 
     return (
+      //Alert โดน Header ทับ
       <div>
-        {showAlert && <Alert message="อัปเดตเรียบร้อย" show onClose={() => setShowAlert(false)} />}
+        {/* <div className="z-[9999]">
+         {showAlert && <Alert message="อัปเดตเรียบร้อย" show onClose={() => setShowAlert(false)} />}
+        </div> */}
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
